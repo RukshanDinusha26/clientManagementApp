@@ -149,6 +149,7 @@
             this.iconButton4.Text = "Log Out";
             this.iconButton4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.iconButton4.UseVisualStyleBackColor = true;
+            this.iconButton4.Click += new System.EventHandler(this.iconButton4_Click_1);
             // 
             // iconButton2
             // 

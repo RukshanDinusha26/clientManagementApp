@@ -91,7 +91,8 @@ namespace clientManagementApp
             }
         }
 
-        private void iconButton4_Click(object sender, EventArgs e)
+
+        private void iconButton4_Click_1(object sender, EventArgs e)
         {
             Logout();
         }

@@ -43,12 +43,12 @@ namespace clientManagementApp
             DataGridView grid = sender as DataGridView;
             string columnName = grid.Columns[e.ColumnIndex].Name;
 
-            if (columnName == "Name") // Only allow sorting on the "Name" column
+            if (columnName == "Name") 
             {
-                // Toggle the sort direction
+               
                 isSortAscending = !isSortAscending;
 
-                // Sort the BindingSource
+                
                 if (isSortAscending)
                 {
                     clientBindingSource.Sort = "Name ASC";
@@ -70,11 +70,11 @@ namespace clientManagementApp
         {
             if (e.ColumnIndex == dataGridViewClients.Columns["Print"].Index)
             {
-                // Get the selected client (based on the row index)
+               
                 var selectedClient = clientBindingSource.List[e.RowIndex] as Client;
                 if (selectedClient != null)
                 {
-                    // Call the method to print the selected client's details
+                  
                     PrintClientDetails(selectedClient);
                 }
             }
@@ -117,10 +117,10 @@ namespace clientManagementApp
         }
         private void ExportToExcel()
         {
-            // Set the license context for EPPlus (required for versions 5.x and above)
-            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial; // Or Commercial for commercial use
+           
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial; 
 
-            // Check if there is any data in the BindingSource
+           
             var clients = Client.LoadAllClients();
             clientBindingSource.DataSource = clients;
             if (clients == null || clients.Count == 0)
@@ -129,7 +129,7 @@ namespace clientManagementApp
                 return;
             }
 
-            // Create a SaveFileDialog to let the user choose where to save the file
+            
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
             {
                 saveFileDialog.Filter = "Excel Files|*.xlsx";
@@ -139,13 +139,12 @@ namespace clientManagementApp
                 {
                     try
                     {
-                        // Create a new Excel package
+                       
                         using (var package = new ExcelPackage())
                         {
-                            // Add a new worksheet to the Excel package
+                            
                             var worksheet = package.Workbook.Worksheets.Add("Clients");
 
-                            // Add headers (column names)
                             worksheet.Cells[1, 1].Value = "ID";
                             worksheet.Cells[1, 2].Value = "Name";
                             worksheet.Cells[1, 3].Value = "Address";
@@ -153,7 +152,7 @@ namespace clientManagementApp
                             worksheet.Cells[1, 5].Value = "Email";
                             worksheet.Cells[1, 6].Value = "Categories";
 
-                            // Add the rows of data to the Excel worksheet
+                            
                             for (int row = 0; row < clients.Count; row++)
                             {
                                 var client = clients[row];
@@ -165,7 +164,7 @@ namespace clientManagementApp
                                 worksheet.Cells[row + 2, 6].Value = client.Categories;
                             }
 
-                            // Save the Excel file to the chosen path
+                           
                             FileInfo fileInfo = new FileInfo(saveFileDialog.FileName);
                             package.SaveAs(fileInfo);
                         }
@@ -184,24 +183,24 @@ namespace clientManagementApp
         {
             if (e.ColumnIndex == dataGridViewClients.Columns["Print"].Index)
             {
-                // Get the selected client (based on the row index)
+               
                 var selectedClient = clientBindingSource.List[e.RowIndex] as Client;
                 if (selectedClient != null)
                 {
-                    // Call the method to print the selected client's details
+                    
                     PrintClientDetails(selectedClient);
                 }
             }
         }
         private void PrintClientDetails(Client client)
         {
-            // Create a PrintDocument instance
+            
             PrintDocument printDoc = new PrintDocument();
 
-            // Set the event handler for the PrintPage event
+           
             printDoc.PrintPage += (sender, e) =>
             {
-                // Print client details
+               
                 e.Graphics.DrawString("Client Details", new Font("Arial", 16, FontStyle.Bold), Brushes.Black, 100, 100);
                 e.Graphics.DrawString($"ID: {client.Id}", new Font("Arial", 12), Brushes.Black, 100, 140);
                 e.Graphics.DrawString($"Name: {client.Name}", new Font("Arial", 12), Brushes.Black, 100, 180);
@@ -211,7 +210,7 @@ namespace clientManagementApp
                 e.Graphics.DrawString($"Categories: {client.Categories}", new Font("Arial", 12), Brushes.Black, 100, 340);
             };
 
-            // Show the print dialog to the user
+            
             PrintDialog printDialog = new PrintDialog
             {
                 Document = printDoc
@@ -219,10 +218,10 @@ namespace clientManagementApp
 
             if (printDialog.ShowDialog() == DialogResult.OK)
             {
-                // Print the document (this triggers the PrintPage event)
+                
                 printDoc.Print();
 
-                // Show success message after printing
+                
                 MessageBox.Show("Client details printed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 

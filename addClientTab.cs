@@ -68,19 +68,19 @@ namespace clientManagementApp
 
         private void dataGridViewClients_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            // Ensure we're not triggering an update when the edit is being made to the new row
+            
             if (e.RowIndex >= 0)
             {
                 var columnName = dataGridViewClients.Columns[e.ColumnIndex].Name;
 
-                // Skip the 'Id' column, since it shouldn't be editable
+                
                 if (columnName == "Id") return;
 
-                // Get the updated value and client Id
+                
                 var clientId = dataGridViewClients.Rows[e.RowIndex].Cells["Id"].Value.ToString(); // Assuming 'Id' column is the primary key
                 var updatedValue = dataGridViewClients.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString(); // Get updated value
 
-                // Call a method to update the database with the new value
+               
                 UpdateClientInDatabase(clientId, columnName, updatedValue);
             }
         }
@@ -153,7 +153,7 @@ namespace clientManagementApp
 
                     if (dataGridViewClients.Columns[cell.ColumnIndex] is DataGridViewButtonColumn)
                     {
-                        continue; // Skip the button column
+                        continue; 
                     }
 
                     if (columnName == "Id") continue;
@@ -169,13 +169,13 @@ namespace clientManagementApp
 
         private void LoadCategories()
         {
-            // Example predefined categories
+            
             var categories = new string[] { "Software", "Laptops & PC", "Games", "Office Tools", "Accessories" };
 
-            // Bind the categories to the ComboBox
+           
             txtCategory.Items.AddRange(categories);
 
-            // Optionally set the first item as the default
+            
             if (txtCategory.Items.Count > 0)
             {
                 txtCategory.SelectedIndex = 0;
@@ -186,21 +186,21 @@ namespace clientManagementApp
         {
             try
             {
-                // Collect input from text fields
+               
                 string name = txtName.Text.Trim();
                 string address = txtAddress.Text.Trim();
                 string phone = txtPhone.Text.Trim();
                 string email = txtEmail.Text.Trim();
-                string categories = txtCategory.SelectedItem?.ToString(); // Get selected category
+                string categories = txtCategory.SelectedItem?.ToString(); 
 
-                // Validate inputs
+              
                 if (string.IsNullOrEmpty(name))
                 {
                     MessageBox.Show("Name is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Create a new Client object and save to database
+                
                 Client newClient = new Client(name, address, phone, email, categories);
                 Client.AddClient(newClient);
 
@@ -235,21 +235,21 @@ namespace clientManagementApp
             txtAddress.Text = string.Empty;
             txtPhone.Text = string.Empty;
             txtEmail.Text = string.Empty;
-            txtCategory.SelectedIndex = 0; // Reset to the first category
+            txtCategory.SelectedIndex = 0;
         }
 
         private void dataGridViewClients_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Ensure the clicked row is valid
+            
             if (e.RowIndex < 0 || e.RowIndex >= dataGridViewClients.Rows.Count)
                 return;
 
-            // Ensure the click is on the Remove button column
+            
             if (dataGridViewClients.Columns[e.ColumnIndex].Name == "remove")
             {
                 int clientId = Convert.ToInt32(dataGridViewClients.Rows[e.RowIndex].Cells["Id"].Value);
 
-                // Confirm deletion
+               
                 var confirmResult = MessageBox.Show($"Are you sure you want to remove this client (ID: {clientId})?",
                                                     "Confirm Remove",
                                                     MessageBoxButtons.YesNo,
@@ -259,12 +259,12 @@ namespace clientManagementApp
                 {
                     try
                     {
-                        // Remove the client from the database
+                        
                         Client.RemoveClient(clientId);
 
                         MessageBox.Show("Client removed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                        // Refresh the DataGridView
+                        
                         RefreshClientData();
                     }
                     catch (Exception ex)
